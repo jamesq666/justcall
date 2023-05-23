@@ -2,13 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\Feedback;
+use app\models\ContactForm;
+use app\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -62,6 +63,26 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    /**
+     * Displays contact page.
+     *
+     * @return string
+     */
+    public function actionFeedback()
+    {
+        $model = new Feedback();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->save();
+
+            return $this->render('index');
+        }
+
+        return $this->render('comment', [
+            'model' => $model,
+        ]);
     }
 
     /**
