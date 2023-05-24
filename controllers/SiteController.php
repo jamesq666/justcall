@@ -3,13 +3,10 @@
 namespace app\controllers;
 
 use app\models\Feedback;
-use app\models\ContactForm;
-use app\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use yii\web\Response;
 
 class SiteController extends Controller
 {
@@ -62,20 +59,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->request->post() !== null) {
-
+        if (!empty(Yii::$app->request->post())) {
             $model = new Feedback();
             $model->comment = Yii::$app->request->post('comment');
             $model->created_at = Yii::$app->request->post('time');
             $model->ip = Yii::$app->request->post('ip');
-            $model->screenshot_path = Yii::$app->request->post('image');
+
+            $fileName = time() . '.jpg';
+            $model->file_name = $fileName;
 
             if ($model->save()) {
+                file_put_contents($fileName, base64_decode(Yii::$app->request->post('image')));
                 //TODO sendEmail
+            } else {
+                return false;
             }
-
-            $file = time() . '.jpg';
-            file_put_contents($file, base64_decode(Yii::$app->request->post('image')));
         }
 
         return $this->render('index');

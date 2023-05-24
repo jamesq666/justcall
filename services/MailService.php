@@ -2,39 +2,21 @@
 
 namespace app\services;
 
-use app\models\Feedback;
 use Yii;
 
 class MailService
 {
-    public function __construct()
-    {
-
-    }
-
     /**
-     * @param string $email
-     * @param User $user
-     * @return bool
+     * @return void
      */
-    public function sendPasswordResetRequestLetter(string $email, User $user)
+    public function sendSuccessEmail()
     {
-        $subject = 'Изменение личных данных FastBox';
-
-        $isSentSuccessfully = Yii::$app
-            ->mailer
-            ->compose(
-                [
-                    'html' => '@common/mail/passwordResetToken-html', //TODO
-                    'text' => '@common/mail/passwordResetToken-text',
-                ],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => self::FROM_NAME_DEFAULT])
-            ->setTo($email)
-            ->setSubject($subject)
+        Yii::$app->mailer->compose()
+            ->setFrom('from@domain.com')
+            ->setTo('to@domain.com')
+            ->setSubject('Тема сообщения')
+            ->setTextBody('Текст сообщения')
+            ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
             ->send();
-
-        return $isSentSuccessfully;
     }
 }

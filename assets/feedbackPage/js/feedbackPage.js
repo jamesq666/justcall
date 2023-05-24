@@ -6,6 +6,7 @@ $('#screenshot').click(function () {
     html2canvas(document.body).then(function (canvas) {
         let data = canvas.toDataURL('image/png');
         $('#screenshot_img').attr('src', data);
+        //если нужно отправить скриншот сразу на сервер
         //document.body.appendChild(canvas);
         //var data = canvas.toDataURL('image/png').replace(/data:image\/png;base64,/, '');
         /*$.post({
@@ -21,7 +22,7 @@ $('#screenshot').click(function () {
 
 $('#feedback').on('click', '.send', function () {
     let comment = $('#comment').val();
-    let time = $('#time').val();
+    let time = $('#time_stamp').val();
     let ip = $('#ip').val();
     let image = $('#screenshot_img').attr('src');
 
@@ -33,6 +34,12 @@ $('#feedback').on('click', '.send', function () {
             'ip': ip,
             'image': image.replace(/data:image\/png;base64,/, ''),
         },
+        success: function (data) {
+            if (data == true) {
+                alert('Comment sent');
+                location.reload();
+            }
+        }
     });
 });
 
@@ -45,14 +52,14 @@ function addImgDiv() {
 function addFormDiv() {
     $form_div = $('<div id="form_div" style="margin: 10px 20px"></div>');
     $form = $('<form></form>');
-    $form.append('<label for="comment">Комментарий</label>');
+    $form.append('<label for="comment">Комментарий <span style="color: red">*</span></label>');
     $form.append('<br>');
-    $form.append('<textarea id="comment" rows="5" cols="133" maxlength="2000" style="resize: none" required ></textarea>');
+    $form.append('<textarea id="comment" rows="5" cols="133" maxlength="2000" style="resize: none" required></textarea>');
     $form.append('<br>');
 
-    let time = curDate();
     $form.append('<label>Текущее время</label>');
-    $form.append('<input id="time" type="text" style="margin: 10px" value="' + time.getHours() + ':' + time.getMinutes() + '" disabled>');
+    $form.append('<input id="time_stamp" type="hidden" value="' + new Date().getTime() + '">');
+    $form.append('<input id="time" type="text" style="margin: 10px" value="' + curDateTime() + '" disabled>');
     $form.append('<label style="margin: 10px">Ваш ip-адрес</label>');
     $form.append('<input id="ip" type="text" disabled>');
     getIp();
@@ -64,8 +71,9 @@ function addFormDiv() {
     $('#feedback').append($form_div);
 }
 
-function curDate() {
-    return new Date();
+function curDateTime() {
+    let dateTime =  new Date();
+    return dateTime.getDate() + '.' + dateTime.getMonth() + '.' + dateTime.getFullYear() + ' ' + dateTime.getHours() + ':' + dateTime.getMinutes();
 }
 
 //найдено на просторах интернета

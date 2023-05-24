@@ -2,27 +2,20 @@
 
 namespace app\models;
 
+use app\services\MailService;
 use yii\db\ActiveRecord;
+
+/**
+ * This is the model class for table "feedback".
+ *
+ * @property string comment
+ * @property string ip
+ * @property string file_name
+ * @property string created_at
+ */
 
 class Feedback extends ActiveRecord
 {
-    /**
-     * @var array|mixed|object|null
-     */
-    public $comment;
-    /**
-     * @var array|mixed|object|null
-     */
-    public $created_at;
-    /**
-     * @var array|mixed|object|null
-     */
-    public $ip;
-    /**
-     * @var array|mixed|object|null
-     */
-    public $screenshot_path;
-
     /**
      * {@inheritdoc}
      */
@@ -37,9 +30,10 @@ class Feedback extends ActiveRecord
     public function rules()
     {
         return [
-            [['comment'], 'string'],
-            [['created_at'], 'safe'],
-            [['screenshot_path'], 'string', 'max' => 255],
+            [['comment'], 'string', 'max' => 2000],
+            [['comment'], 'required'],
+            [['created_at'], 'string'],
+            [['file_name'], 'string', 'max' => 255],
             [['ip'], 'string', 'max' => 15],
         ];
     }
@@ -52,7 +46,7 @@ class Feedback extends ActiveRecord
         return [
             'id' => 'ID',
             'comment' => 'Comment',
-            'screenshot_path' => 'Screenshot Path',
+            'file_name' => 'Screenshot Path',
             'ip' => 'Ip',
             'created_at' => 'Created At',
         ];
