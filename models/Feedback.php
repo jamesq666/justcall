@@ -7,6 +7,23 @@ use yii\db\ActiveRecord;
 class Feedback extends ActiveRecord
 {
     /**
+     * @var array|mixed|object|null
+     */
+    public $comment;
+    /**
+     * @var array|mixed|object|null
+     */
+    public $created_at;
+    /**
+     * @var array|mixed|object|null
+     */
+    public $ip;
+    /**
+     * @var array|mixed|object|null
+     */
+    public $screenshot_path;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -39,5 +56,12 @@ class Feedback extends ActiveRecord
             'ip' => 'Ip',
             'created_at' => 'Created At',
         ];
+    }
+
+    /**
+     * @return void
+     */
+    public function sendEmail() {
+        $mailService = new MailService();
     }
 }
