@@ -60,15 +60,17 @@ class SiteController extends Controller
         if (!empty(Yii::$app->request->post())) {
             $model = new Feedback();
             $model->comment = Yii::$app->request->post('comment');
-            $model->created_at = Yii::$app->request->post('time');
-            $model->ip = Yii::$app->request->post('ip');
 
-            $fileName = date("YmdHis") . '.jpg';
+            $fileName = 'upload/' . date("YmdHis") . '.jpg';
             $model->file_name = $fileName;
+            $model->ip = Yii::$app->request->post('ip');
+            $model->request_time = Yii::$app->request->post('time');
 
             if ($model->save()) {
+                $this->checkOrCreateDir('upload');
                 file_put_contents($fileName, base64_decode(Yii::$app->request->post('image')));
                 $model->sendEmail($model->comment, $model->file_name);
+
                 return true;
             } else {
                 return false;
@@ -76,5 +78,16 @@ class SiteController extends Controller
         }
 
         return $this->render('index');
+    }
+
+    /**
+     * @param string $dirName
+     * @return void
+     */
+    public function checkOrCreateDir(string $dirName)
+    {
+        if (!file_exists($dirName)) {
+            mkdir($dirName, 0777, true);
+        }
     }
 }

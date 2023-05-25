@@ -9,9 +9,9 @@ use yii\db\ActiveRecord;
  * This is the model class for table "feedback".
  *
  * @property string comment
- * @property string ip
  * @property string file_name
- * @property string created_at
+ * @property string ip
+ * @property string request_time
  */
 class Feedback extends ActiveRecord
 {
@@ -31,9 +31,9 @@ class Feedback extends ActiveRecord
         return [
             [['comment'], 'string', 'max' => 2000],
             [['comment'], 'required'],
-            [['created_at'], 'string'],
             [['file_name'], 'string', 'max' => 255],
             [['ip'], 'string', 'max' => 15],
+            [['request_time'], 'string', 'max' => 50],
         ];
     }
 
@@ -47,6 +47,7 @@ class Feedback extends ActiveRecord
             'comment' => 'Comment',
             'file_name' => 'Screenshot Path',
             'ip' => 'Ip',
+            'request_time' => 'Request Time',
             'created_at' => 'Created At',
         ];
     }
@@ -56,7 +57,6 @@ class Feedback extends ActiveRecord
      */
     public function sendEmail(string $text, string $fileName)
     {
-        $mailService = new MailService();
-        $mailService->sendSuccessEmail($text, $fileName);
+        (new MailService())->sendSuccessEmail($text, $fileName);
     }
 }

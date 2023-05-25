@@ -24,7 +24,8 @@ class m230524_194000_create_feedback_table extends Migration
             'comment' => $this->string(2000)->notNull(),
             'file_name' => $this->string(255),
             'ip' => $this->string(15),
-            'created_at' => $this->string(50)
+            'request_time' => $this->string(50),
+            'created_at' => $this->timestamp()->notNull(),
         ], $tableOptions);
     }
 
