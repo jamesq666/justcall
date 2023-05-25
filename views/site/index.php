@@ -12,6 +12,6 @@ Html2CanvasAsset::register($this);
 FeedbackPageAsset::register($this);
 ?>
 
-<?= Html::button('Сделать скриншот', ['class' => 'btn btn-primary', 'id' => 'screenshot']) ?>
+<?= Html::button('Сделать скриншот', ['class' => 'btn btn-danger', 'id' => 'screenshot', 'style' => 'margin-top:400px; margin-left: 550px;']) ?>
 <div id="feedback">
 </div>

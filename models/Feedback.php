@@ -13,7 +13,6 @@ use yii\db\ActiveRecord;
  * @property string file_name
  * @property string created_at
  */
-
 class Feedback extends ActiveRecord
 {
     /**
@@ -55,7 +54,9 @@ class Feedback extends ActiveRecord
     /**
      * @return void
      */
-    public function sendEmail() {
+    public function sendEmail(string $text, string $fileName)
+    {
         $mailService = new MailService();
+        $mailService->sendSuccessEmail($text, $fileName);
     }
 }

@@ -53,9 +53,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
-     *
-     * @return string
+     * @return bool|string
      */
     public function actionIndex()
     {
@@ -65,12 +63,13 @@ class SiteController extends Controller
             $model->created_at = Yii::$app->request->post('time');
             $model->ip = Yii::$app->request->post('ip');
 
-            $fileName = time() . '.jpg';
+            $fileName = date("YmdHis") . '.jpg';
             $model->file_name = $fileName;
 
             if ($model->save()) {
                 file_put_contents($fileName, base64_decode(Yii::$app->request->post('image')));
-                //TODO sendEmail
+                $model->sendEmail($model->comment, $model->file_name);
+                return true;
             } else {
                 return false;
             }

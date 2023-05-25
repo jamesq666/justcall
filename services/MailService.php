@@ -9,14 +9,15 @@ class MailService
     /**
      * @return void
      */
-    public function sendSuccessEmail()
+    public function sendSuccessEmail(string $text, string $fileName)
     {
         Yii::$app->mailer->compose()
-            ->setFrom('from@domain.com')
-            ->setTo('to@domain.com')
-            ->setSubject('Тема сообщения')
+            ->setFrom(Yii::$app->params['senderEmail'])
+            ->setTo(Yii::$app->params['adminEmail'])
+            ->setSubject('Новое сообщение')
             ->setTextBody('Текст сообщения')
-            ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
+            ->setHtmlBody($text)
+            ->attach($fileName)
             ->send();
     }
 }
