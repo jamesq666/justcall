@@ -1,5 +1,6 @@
 <?php
 
+use yii\db\Expression;
 use yii\db\Migration;
 
 /**
@@ -20,12 +21,12 @@ class m230524_194000_create_feedback_table extends Migration
         }
 
         $this->createTable($this->table_name, [
-            'id' => $this->primaryKey(),
+            'id' => $this->primaryKey()->notNull(),
             'comment' => $this->string(2000)->notNull(),
             'file_name' => $this->string(255),
             'ip' => $this->string(15),
             'request_time' => $this->string(50),
-            'created_at' => $this->timestamp()->notNull(),
+            'created_at' => $this->datetime()->defaultValue(new Expression('CURRENT_TIMESTAMP')),
         ], $tableOptions);
     }
 

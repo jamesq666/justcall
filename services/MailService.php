@@ -14,7 +14,7 @@ class MailService
         Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['senderEmail'])
             ->setTo(Yii::$app->params['adminEmail'])
-            ->setSubject('Новое сообщение')
+            ->setSubject('Новое обращение формы обратной связи')
             ->setTextBody('Текст сообщения')
             ->setHtmlBody($text)
             ->attach($fileName)

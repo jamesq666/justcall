@@ -39,10 +39,8 @@ $('#feedback').on('click', '.send', function (e) {
         success: function (data) {
             if (data == true) {
                 alert('Comment sent');
-            } else {
-                alert('Comment not sent');
+                location.reload();
             }
-            location.reload();
         }
     });
 });
